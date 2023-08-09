@@ -16,11 +16,17 @@ app.get('/', (req: Request, res: Response) => {
 
 // status check
 app.get('/closest-week-day', (req: Request, res: Response) => {
-    const date = req.query.date;
-    console.log(`date is:`, date)
-    // date transformar em data
-
-    res.send(date)
+    const dateString = req.query.date as string; 
+    const date = new Date(dateString);
+    try{
+        if (isNaN(date.getTime())) {
+            throw new Error()
+        }else{
+            res.send(closestWeekDay(date))
+        }
+    }catch (error){
+        res.status(400).send('Invalid Date');
+    }
 })
 
 app.listen(port,()=>{
