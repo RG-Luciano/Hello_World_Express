@@ -17,10 +17,10 @@ app.get('/', (req: Request, res: Response) => {
 
 // status check
 app.get('/closest-week-day', (req: Request, res: Response) => {
-    const result: ApiPayload = {
-        body: '',
+    const result: ApiPayload<Date> = {
+        data: new Date(),
         status: 200,
-        errorMessage: '',
+        errorMessages: [],
     }
     try{
         const dateString = req.query.date; 
@@ -29,16 +29,15 @@ app.get('/closest-week-day', (req: Request, res: Response) => {
         if (!dateString) throw new Error('Date must not be empty')
         const date = new Date(dateString + 'T00:00:00');
         if (isNaN(date.getTime())) throw new Error('Invalid Date')
-        result.body = JSON.stringify({ closestWeekDay: closestWeekDay(date) })
+        result.data = closestWeekDay(date)
     }catch (error: unknown){
         result.status = 400
-        result.errorMessage = isError(error) ? error.message : 'Unknown error'
+        result.errorMessages = [isError(error) ? error.message : 'Unknown error']
     }
     finally{
         const { status, ...rest } = result
         res.status(result.status).send(rest)
     }
-
 })
 
 app.listen(port,()=>{

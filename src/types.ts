@@ -1,7 +1,7 @@
 export type HttpStatus = 200 | 400 | 404 | 500
 
-export interface ApiPayload {
-    body: string
+export interface ApiPayload<T> {
+    data: T
     status: HttpStatus
-    errorMessage: string
+    errorMessages: string[]
 }

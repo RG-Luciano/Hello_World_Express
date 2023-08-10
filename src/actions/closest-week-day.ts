@@ -17,10 +17,6 @@ function isHoliday(date: Date) {
 export default function closestWeekDay(date: Date) {
     let newDate = new Date(date)
     
-    while (true) {
-        if (isWeekday(newDate) && !isHoliday(newDate)) {
-            return  newDate.toDateString()
-        }
-        newDate.setDate(newDate.getDate() + 1)
-    }
+    if (isWeekday(newDate) && !isHoliday(newDate)) return newDate
+    else return closestWeekDay(new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate() + 1))
 }
