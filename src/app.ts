@@ -27,7 +27,7 @@ app.get('/closest-week-day', (req: Request, res: Response) => {
         if (typeof dateString != 'string') throw new Error('Date must be a string')
 
         if (!dateString) throw new Error('Date must not be empty')
-        const date = new Date(dateString);
+        const date = new Date(dateString + 'T00:00:00');
         if (isNaN(date.getTime())) throw new Error('Invalid Date')
         result.body = JSON.stringify({ closestWeekDay: closestWeekDay(date) })
     }catch (error: unknown){

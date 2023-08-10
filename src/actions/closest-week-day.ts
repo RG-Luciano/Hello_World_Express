@@ -1,15 +1,26 @@
 const holiday = [
-    new Date (2023, 3, 1),
-    new Date (2023, 3, 7),
-    new Date (2023, 3, 9),
-    new Date (2023, 3, 21)
-]
+    new Date(2023, 3, 1),
+    new Date(2023, 3, 7),
+    new Date(2023, 3, 9),
+    new Date(2023, 3, 21)
+];
 
-export default function closestWeekDay(date: Date){
-    for(const currentDate of holiday) {
-        if (date.getTime() === currentDate.getTime()) {
-            return (`holiday  ` + date);
+function isWeekday(date: Date) {
+    const dayOfWeek = date.getDay();
+    return dayOfWeek >= 1 && dayOfWeek <= 5
+}
+
+function isHoliday(date: Date) {
+    return holiday.some(h => h.toDateString() === date.toDateString())
+}
+
+export default function closestWeekDay(date: Date) {
+    let newDate = new Date(date)
+    
+    while (true) {
+        if (isWeekday(newDate) && !isHoliday(newDate)) {
+            return  newDate.toDateString()
         }
+        newDate.setDate(newDate.getDate() + 1)
     }
-    return `it's not a holiday` + date;
 }
