@@ -1,7 +1,8 @@
 import type { Request, Response } from 'express'
 import express from 'express'
-import as, { sum } from './utils'
+import as, { isError, sum } from './utils'
 import closestWeekDay from './actions/closest-week-day'
+import { ApiPayload } from './types'
 
 const app = express()
 const port = 3000
@@ -16,17 +17,28 @@ app.get('/', (req: Request, res: Response) => {
 
 // status check
 app.get('/closest-week-day', (req: Request, res: Response) => {
-    const dateString = req.query.date as string; 
-    const date = new Date(dateString);
-    try{
-        if (isNaN(date.getTime())) {
-            throw new Error()
-        }else{
-            res.send(closestWeekDay(date))
-        }
-    }catch (error){
-        res.status(400).send('Invalid Date');
+    const result: ApiPayload = {
+        body: '',
+        status: 200,
+        errorMessage: '',
     }
+    try{
+        const dateString = req.query.date; 
+        if (typeof dateString != 'string') throw new Error('Date must be a string')
+
+        if (!dateString) throw new Error('Date must not be empty')
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) throw new Error('Invalid Date')
+        result.body = JSON.stringify({ closestWeekDay: closestWeekDay(date) })
+    }catch (error: unknown){
+        result.status = 400
+        result.errorMessage = isError(error) ? error.message : 'Unknown error'
+    }
+    finally{
+        const { status, ...rest } = result
+        res.status(result.status).send(rest)
+    }
+
 })
 
 app.listen(port,()=>{
