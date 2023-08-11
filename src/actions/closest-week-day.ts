@@ -14,9 +14,15 @@ function isHoliday(date: Date) {
     return holiday.some(h => h.toDateString() === date.toDateString())
 }
 
-export default function closestWeekDay(date: Date) {
+export function closestWeekDay(date: Date) {
     let newDate = new Date(date)
     
     if (isWeekday(newDate) && !isHoliday(newDate)) return newDate
     else return closestWeekDay(new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate() + 1))
+}
+export function closestWeekDayBefore(date: Date) {
+    let newDate = new Date(date)
+    
+    if (isWeekday(newDate) && !isHoliday(newDate)) return newDate
+    else return closestWeekDayBefore(new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate() - 1))
 }
