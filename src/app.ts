@@ -5,7 +5,7 @@ import as, { isError, sum } from './utils'
 import { ApiPayload } from './types';
 
 const app = express()
-const port = 3000
+const port = 3003
 
 // popular os tesu dados
 // quais vao ser os feriados
@@ -15,12 +15,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!')
 })
 
-function interceptor(closestDay:(date: Date)=> Date){
-    return function(req: Request, res: Response){
-        const result: ApiPayload<Date> = {
-            data: new Date(),
-            status: 200,
-            errorMessages: [],
+function interceptor(closestDay:(date: Date)=> Date){ return function(req: Request, res: Response){ const result: ApiPayload<Date> = { data: new Date(), status: 200, errorMessages: [],
         }
         try{
             const dateString = req.query.date; 
