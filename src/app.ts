@@ -1,55 +1,23 @@
-import {closestWeekDay, closestWeekDayBefore} from "./actions/closest-week-day";
-import type { Request, Response, NextFunction } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 import express from 'express'
-import as, { isError, sum } from './utils'
-import { ApiPayload } from './types';
+import as, { sum } from './utils'
+import { outputHandler } from "./middleware/out";
 
 const app = express()
 const port = 3003
+const router = express.Router()
 
-// popular os tesu dados
-// quais vao ser os feriados
-
-// status check
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello World!')
+router.use((req: Request, res: Response, next: NextFunction) => {
+    console.log("request intercepted here", req.query)
+    next()
 })
 
-function interceptor(closestDay:(date: Date)=> Date){ return function(req: Request, res: Response, next: NextFunction){ const result: ApiPayload<Date> = { data: new Date(), status: 200, errorMessages: [],
-    }
-    const dateString = req.query.date; 
-    if (typeof dateString != 'string') throw new Error('Date must be a string')
-    if (!dateString) throw new Error('Date must not be empty')
-    const date = new Date(dateString + 'T00:00:00')
-    if (isNaN(date.getTime())) throw new Error('Invalid Date')
-    result.data = closestDay(date)
-//         try{
-//             const dateString = req.query.date; 
-//             if (typeof dateString != 'string') throw new Error('Date must be a string')
-    
-//             if (!dateString) throw new Error('Date must not be empty')
-//             const date = new Date(dateString + 'T00:00:00');
-//             if (isNaN(date.getTime())) throw new Error('Invalid Date')
-//             result.data = closestDay(date)
-//         }catch (error: unknown){
-//             result.status = 400
-//             result.errorMessages = [isError(error) ? error.message : 'Unknown error']
-//         }
-//         finally{
-//             const { status, ...rest } = result
-//             res.status(result.status).send(rest)
-//         }
-    }
-    
-}
+router.get('/sample', (req: Request, res: Response, next: NextFunction) => {
+    console.log("actual implementation")
+    outputHandler(req, res, next)
+})
 
-// status check
-app.get('/closest-week-day',(closestWeekDay), (req: Request, res: Response)=>{
-    
-}) 
-app.get('/closest-week-day-before',(closestWeekDayBefore),(req: Request, res: Response)=>{
-
-}) 
+app.use('/', router)
 
 app.listen(port,()=>{
     console.log(`App listen on port ${port}`, as(1, 2), sum(2, 3))
