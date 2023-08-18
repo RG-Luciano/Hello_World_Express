@@ -1,5 +1,5 @@
 import {closestWeekDay, closestWeekDayBefore} from "./actions/closest-week-day";
-import type { Request, Response } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 import express from 'express'
 import as, { isError, sum } from './utils'
 import { ApiPayload } from './types';
@@ -15,33 +15,39 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!')
 })
 
-function interceptor(closestDay:(date: Date)=> Date){ return function(req: Request, res: Response){ const result: ApiPayload<Date> = { data: new Date(), status: 200, errorMessages: [],
-        }
-        try{
-            const dateString = req.query.date; 
-            if (typeof dateString != 'string') throw new Error('Date must be a string')
+function interceptor(closestDay:(date: Date)=> Date){ return function(req: Request, res: Response, next: NextFunction){ const result: ApiPayload<Date> = { data: new Date(), status: 200, errorMessages: [],
+    }
+    const dateString = req.query.date; 
+    if (typeof dateString != 'string') throw new Error('Date must be a string')
+    if (!dateString) throw new Error('Date must not be empty')
+    const date = new Date(dateString + 'T00:00:00')
+    if (isNaN(date.getTime())) throw new Error('Invalid Date')
+    result.data = closestDay(date)
+//         try{
+//             const dateString = req.query.date; 
+//             if (typeof dateString != 'string') throw new Error('Date must be a string')
     
-            if (!dateString) throw new Error('Date must not be empty')
-            const date = new Date(dateString + 'T00:00:00');
-            if (isNaN(date.getTime())) throw new Error('Invalid Date')
-            result.data = closestDay(date)
-        }catch (error: unknown){
-            result.status = 400
-            result.errorMessages = [isError(error) ? error.message : 'Unknown error']
-        }
-        finally{
-            const { status, ...rest } = result
-            res.status(result.status).send(rest)
-        }
+//             if (!dateString) throw new Error('Date must not be empty')
+//             const date = new Date(dateString + 'T00:00:00');
+//             if (isNaN(date.getTime())) throw new Error('Invalid Date')
+//             result.data = closestDay(date)
+//         }catch (error: unknown){
+//             result.status = 400
+//             result.errorMessages = [isError(error) ? error.message : 'Unknown error']
+//         }
+//         finally{
+//             const { status, ...rest } = result
+//             res.status(result.status).send(rest)
+//         }
     }
     
 }
 
 // status check
-app.get('/closest-week-day', interceptor(closestWeekDay), (req: Request, res: Response)=>{
+app.get('/closest-week-day',(closestWeekDay), (req: Request, res: Response)=>{
     
 }) 
-app.get('/closest-week-day-before',interceptor(closestWeekDayBefore),(req: Request, res: Response)=>{
+app.get('/closest-week-day-before',(closestWeekDayBefore),(req: Request, res: Response)=>{
 
 }) 
 
