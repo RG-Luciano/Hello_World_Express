@@ -17,7 +17,7 @@ router.get('/sample', (req: Request, res: Response, next: NextFunction) => {
     try {
         const flag = 1
         if (1 == flag)
-            throw new Error('error caught here')
+            throw 1
         else {
             const payload: ApiPayload<string> = {
                 data: `all good`,
