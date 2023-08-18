@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
 import express from 'express'
 import as, { sum } from './utils'
-import { outputHandler } from "./middleware/out";
+import { errorHandler, outputHandler } from "./middleware/out";
 import { ApiPayload } from './types';
 
 const app = express()
@@ -14,12 +14,21 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 })
 
 router.get('/sample', (req: Request, res: Response, next: NextFunction) => {
-    const payload: ApiPayload<string> = {
-        data: `all good`,
-        status: 200,
-        errorMessages: []
+    try {
+        const flag = 1
+        if (1 == flag)
+            throw new Error('error caught here')
+        else {
+            const payload: ApiPayload<string> = {
+                data: `all good`,
+                status: 200,
+                errorMessages: []
+            }
+            outputHandler(req, res, payload)
+        }
+    } catch(err: unknown){
+        errorHandler(res, err)
     }
-    outputHandler(req, res, payload)
 })
 
 app.use('/', router)
