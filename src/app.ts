@@ -10,16 +10,15 @@ const port = 3003
 const router = express.Router()
 
 // isso ta sendo usado pra que?
-router.use((req: Request, res: Response, next: NextFunction) => {
+router.use(inputHandler,(req: Request, res: Response, next: NextFunction) => {
     console.log("request intercepted here..", req.query)
     next()
 })
 
-app.use(inputHandler)
-
 // adicionei esse endpoint pq a gente tinha anteriormente
 // chama ele no postman, ve o que acontece
-// e me fala o que entendes...
+// e me fala o que entendes... ao colocar "http://localhost:3003/" o retorno no postman deveria ser a mensagem
+// que esta escrita ai, no entanto ta retornando erro.
 router.get('/',(req, res)=>{
     res.status(200).send({ message: "the api works..." })
 })

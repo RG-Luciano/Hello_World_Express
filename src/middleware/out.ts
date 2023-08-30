@@ -8,6 +8,9 @@ function isError(err: unknown): err is Error {
 }
 
 // onde isso ta sendo chamado
+// lugar nenhum, quando criei o try catch o errorHandler deixou de ser usado, no entanto se eu usar ele no
+// app.ts feito eu fiz com o inputHandler, caso tenha algum erro que nao seja relacionado ao usuario
+// ele ira retornar o erro
 export function errorHandler(res: Response, err: unknown, next: NextFunction){
     if (isError(err))
         res.status(500).send({ message: err.message})
