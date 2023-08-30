@@ -7,6 +7,7 @@ function isError(err: unknown): err is Error {
     else return !!err.message
 }
 
+// onde isso ta sendo chamado
 export function errorHandler(res: Response, err: unknown, next: NextFunction){
     if (isError(err))
         res.status(500).send({ message: err.message})

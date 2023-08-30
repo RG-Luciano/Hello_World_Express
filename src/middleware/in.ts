@@ -12,8 +12,11 @@ export function inputHandler(req: Request, res: Response, next: NextFunction){
         if (!dateString) throw new Error('Date must not be empty')
         const date = new Date(dateString + 'T00:00:00')
         if (isNaN(date.getTime())) throw new Error('Invalid Date')
+        // pra que guardas a data em res.locals??
         res.locals.date = date
         next()
+    // nao use ANY aqui
+    // use UNKNOWN
     }catch (error: any){
         const payload: ApiPayload<null> = {
             data: null,
