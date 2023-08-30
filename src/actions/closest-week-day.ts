@@ -7,14 +7,18 @@ const holiday = [
 
 function isWeekday(date: Date) {
     const dayOfWeek = date.getDay();
-    return dayOfWeek >= 1 && dayOfWeek <= 5
+    if(dayOfWeek >= 1 && dayOfWeek <= 5){
+        return true
+    }else{
+        return false
+    }
 }
 
 function isHoliday(date: Date) {
     return holiday.some(h => h.toDateString() === date.toDateString())
 }
 
-export function closestWeekDay(date: Date) {
+export function closestWeekDay(date: Date): Date {
     let newDate = new Date(date)
     
     if (isWeekday(newDate) && !isHoliday(newDate)) return newDate

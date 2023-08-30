@@ -1,10 +1,9 @@
 import type { NextFunction, Request, Response } from 'express'
 import express from 'express'
 import as, { sum } from './utils'
-import { errorHandler, outputHandler} from "./middleware/out";
 import { inputHandler} from "./middleware/in";
-import { ApiPayload } from './types';
 import { closestWeekDay, closestWeekDayBefore } from './actions/closest-week-day';
+import { handlerDay } from './middleware/out';
 
 const app = express()
 const port = 3003
@@ -12,18 +11,16 @@ const router = express.Router()
 
 router.use((req: Request, res: Response, next: NextFunction) => {
     console.log("request intercepted here..", req.query)
-    
     next()
 })
+app.use(inputHandler)
 
-router.get('/closest-week-day',(req: Request, res: Response, next: NextFunction)=>{
-    console.log(closestWeekDay(inputHandler(req, res, next)))
-
+router.get('/closest-week-day',(req, res)=>{
+    handlerDay(req, res, closestWeekDay)
 })
 
-router.get('/closest-week-day-before',async(req: Request, res: Response, next: NextFunction)=>{
-    console.log(closestWeekDayBefore(inputHandler(req, res, next)))
-    
+router.get('/closest-week-day-before', (req, res)=>{
+    handlerDay(req, res, closestWeekDayBefore)
 })
 
 app.use('/', router)
