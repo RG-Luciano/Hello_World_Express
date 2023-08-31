@@ -4,10 +4,8 @@ export function sum(a: number, b: number) {
 
 export function isError(err: unknown): err is Error {
     if (err == null) return false
-    else {
-        // @ts-ignore this is valid
-        return !!err.message
-    }
+    // @ts-ignore this is valid
+    else return !!err.message
 }
 
 function diff(a: number, b: number) {

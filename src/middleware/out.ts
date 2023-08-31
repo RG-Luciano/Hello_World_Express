@@ -1,10 +1,5 @@
 import type { Response } from "express";
-
-function isError(err: unknown): err is Error {
-  if (err == null) return false;
-  // @ts-ignore this is good pq soy fueda
-  else return !!err.message;
-}
+import { isError } from "../utils";
 
 export function errorHandler(res: Response, err: unknown) {
   if (isError(err)) res.status(500).send({ message: err.message });
