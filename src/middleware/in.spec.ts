@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { dateValidation } from "./in";
 import httpMocks from 'node-mocks-http'
-import { sendBadRequest } from "./out";
+import { sendBadRequest, sendUnexpectedError } from "./out";
 
 jest.mock('./out', ()=>({
     sendBadRequest: jest.fn(),
@@ -60,4 +60,5 @@ describe("Testing the function dateValidation", () =>{
         expect(sendBadRequest).toHaveBeenCalledWith(res, "Invalid Date")
         expect(next).not.toHaveBeenCalled()
     })
+    
 })

@@ -11,12 +11,19 @@ describe("Testing the functions in out.ts",()=>{
         jest.clearAllMocks();
       });
 
-    it("ErrorHandler show send 500 response with error message",()=>{
-        const error = new Error("Test Error")
+    it("ErrorHandler show send 500 response with error message on 'Else",()=>{
+        const error = new Error("Unknown error")
         errorHandler(mockResponse, error)
         expect(mockResponse.status).toHaveBeenCalledWith(500)
-        expect(mockResponse.send).toHaveBeenCalledWith({message:"Test Error"})
+        expect(mockResponse.send).toHaveBeenCalledWith({message:"Unknown error"})
     })
+
+    it('ErrorHandler should send 500 response with error message', () => {
+      const error = new Error('Test Error');
+      errorHandler(mockResponse, error);
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
+      expect(mockResponse.send).toHaveBeenCalledWith({ message: 'Test Error' });
+    });
 
     it("sendSuccess should send a 200 response with data", () => {
         const data = { message: "Success" }
