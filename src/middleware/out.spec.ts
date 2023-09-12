@@ -1,5 +1,4 @@
-import { Request, Response, NextFunction } from "express"
-import { errorHandler, sendSuccess, sendBadRequest, sendUnexpectedError } from "./out"
+import { Request, Response, NextFunction } from "express" import { errorHandler, sendSuccess, sendBadRequest, sendUnexpectedError } from "./out"
 
 describe("Testing the functions in out.ts",()=>{
     const mockResponse = {
