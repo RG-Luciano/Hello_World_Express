@@ -1,4 +1,5 @@
-import { Request, Response, NextFunction } from "express" import { errorHandler, sendSuccess, sendBadRequest, sendUnexpectedError } from "./out"
+import { Request, Response, NextFunction } from "express" 
+import { errorHandler, sendSuccess, sendBadRequest, sendUnexpectedError } from "./out"
 
 describe("Testing the functions in out.ts",()=>{
     const mockResponse = {
@@ -10,8 +11,8 @@ describe("Testing the functions in out.ts",()=>{
         jest.clearAllMocks();
       });
 
-    it("ErrorHandler show send 500 response with error message on 'Else",()=>{
-        const error = new Error("Unknown error")
+    it("ErrorHandler show send 500 response with error message on 'Else'",()=>{
+        const error = "Unknown error"
         errorHandler(mockResponse, error)
         expect(mockResponse.status).toHaveBeenCalledWith(500)
         expect(mockResponse.send).toHaveBeenCalledWith({message:"Unknown error"})

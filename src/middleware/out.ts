@@ -3,7 +3,7 @@ import { isError } from "../utils";
 
 export function errorHandler(res: Response, err: unknown) {
   if (isError(err)) res.status(500).send({ message: err.message });
-  else res.status(500).send({ message: "unknown error" });
+  else res.status(500).send({ message: "Unknown error" });
 }
 
 export function sendSuccess(res: Response, data: unknown) {
