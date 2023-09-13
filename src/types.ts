@@ -8,7 +8,7 @@ export interface DateHandler {
 }
 
 export class BadRequestError extends Error {
-  status: number;
+  readonly status: number;
   constructor(message: string) {
     super(message);
 

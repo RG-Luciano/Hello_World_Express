@@ -5,7 +5,7 @@ import {
   closestWeekDayBefore,
 } from "./actions/closest-week-day";
 import { errorHandler, sendSuccess } from "./middleware/out";
-import { DateHandler } from "./types";
+import { BadRequestError, DateHandler } from "./types";
 
 const app = express();
 const port = 3003;
