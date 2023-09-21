@@ -6,6 +6,7 @@ import {
 } from "./actions/closest-week-day";
 import { errorHandler, sendSuccess } from "./middleware/out";
 import { BadRequestError, DateHandler } from "./types";
+import auth from "./middleware/auth";
 
 const app = express();
 const port = 3003;
@@ -32,6 +33,8 @@ router.get("/closest-week-day-before", (req, res) => {
     errorHandler(res, err);
   }
 });
+
+router.post("/auth", auth)
 
 app.use("/", router);
 
