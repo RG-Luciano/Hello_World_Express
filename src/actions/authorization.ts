@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 const secretKey = 'SecretKey';
 
 const loginUser = (req: Request, res: Response) => {
-    const { username, password } = req.body;
+    const { username, password } = req.query;
     console.log("Recebido: username =", username, "password =", password);
 
     const users = [
@@ -13,6 +13,10 @@ const loginUser = (req: Request, res: Response) => {
     ];
 
     const user = users.find(u => u.username === username && u.password === password);
+
+    if(!username || !password){
+        return res.status(400).json({message:'Field cannot be empty'})
+    }
 
     if (!user) {
         return res.status(401).json({ message: 'Incorret User or Password' });
