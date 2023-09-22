@@ -7,12 +7,19 @@ import {
 import { errorHandler, sendSuccess } from "./middleware/out";
 import { BadRequestError, DateHandler } from "./types";
 import auth from "./middleware/auth";
+import authorization from "./actions/authorization";
+import bodyParser from "body-parser"
 
 const app = express();
 const port = 3003;
 const router = express.Router();
 
-router.use(`/closest-week-day*`, dateValidation);
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json())
+
+
+router.use(`/auth/closest-week-day*`, dateValidation);
+router.use(`/auth`, auth )
 
 router.get("/", (req, res) => {
   res.status(200).send({ message: "Api works!" });
@@ -34,7 +41,7 @@ router.get("/closest-week-day-before", (req, res) => {
   }
 });
 
-router.post("/auth", auth)
+router.post("/login", authorization.loginUser)
 
 app.use("/", router);
 

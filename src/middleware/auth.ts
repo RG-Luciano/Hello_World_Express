@@ -3,12 +3,6 @@ import {verify} from 'jsonwebtoken'
 
 const secretKey = 'SecretKey'
 
-type TokenPayload = {
-  id: string  
-  iat: number
-  exp: number
-}
-
 function auth(req: Request, res: Response, next: NextFunction) {
   const token = req.header('x-auth-token')
   
@@ -17,10 +11,9 @@ function auth(req: Request, res: Response, next: NextFunction) {
   }
 
   try {
-    const decoded = verify(token, "secret ") 
-    const {id} = decoded as TokenPayload
-
-    req.user = id
+    const decoded = verify(token, secretKey) 
+    const {sub} = decoded
+    res.locals.user = sub
 
     next()
   } catch (error) {
