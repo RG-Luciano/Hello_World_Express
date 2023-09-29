@@ -1,3 +1,5 @@
+import { BadRequestError } from "../types";
+
 const holiday = [
     new Date(2023, 3, 1),
     new Date(2023, 3, 7),
@@ -20,13 +22,15 @@ function isHoliday(date: Date) {
 
 export function closestWeekDay(date: Date): Date {
     let newDate = new Date(date)
-    
-    if (isWeekday(newDate) && !isHoliday(newDate)) return newDate
+
+    if(isNaN(+newDate)) throw new BadRequestError("Invalid date here")
+    else if (isWeekday(newDate) && !isHoliday(newDate)) return newDate
     else return closestWeekDay(new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate() + 1))
 }
 export function closestWeekDayBefore(date: Date) {
     let newDate = new Date(date)
     
-    if (isWeekday(newDate) && !isHoliday(newDate)) return newDate
+    if(isNaN(+newDate)) throw new BadRequestError("Invalid date here")
+    else if (isWeekday(newDate) && !isHoliday(newDate)) return newDate
     else return closestWeekDayBefore(new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate() - 1))
 }
